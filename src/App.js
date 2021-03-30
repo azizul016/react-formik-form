@@ -1,11 +1,11 @@
 import logo from "./logo.svg";
 import "./App.css";
-import FormicHook from "./component/FormicHook/FormicHook";
+import FormicHookNew from "./component/FormicHook/FormicHookNew";
 
 function App() {
   return (
     <div className='App'>
-      <FormicHook />
+      <FormicHookNew />
     </div>
   );
 }

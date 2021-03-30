@@ -1,5 +1,6 @@
 import React from "react";
 import { useFormik } from "formik";
+import * as yup from "yup";
 
 //initial values;
 const initialValues = {
@@ -34,11 +35,19 @@ const validate = (values) => {
   return errors;
 };
 
-const FormicHook = () => {
+//yap schema validation;
+const validationSchema = yup.object({
+  name: yup.string().required("Required"),
+  email: yup.string().email().required("Required"),
+  chanelName: yup.string().required("Required"),
+});
+
+const FormicHookOld = () => {
   const formik = useFormik({
     initialValues,
     onSubmit,
-    validate,
+    // validate,
+    validationSchema,
   });
 
   return (
@@ -51,9 +60,15 @@ const FormicHook = () => {
               type='text'
               name='name'
               id='name'
-              onChange={formik.handleChange}
-              value={formik.values.name}
+              // onChange={formik.handleChange}
+              // onBlur={formik.handleBlur}
+              // value={formik.values.name}
+              //alternative
+              {...formik.getFieldProps("name")}
             />
+            {formik.touched.name && formik.errors.name ? (
+              <div className='error'>{formik.errors.name}</div>
+            ) : null}
           </div>
           <div>
             <label htmlFor='email'>Email</label>
@@ -61,19 +76,31 @@ const FormicHook = () => {
               type='email'
               name='email'
               id='email'
-              onChange={formik.handleChange}
-              value={formik.values.email}
+              // onChange={formik.handleChange}
+              // onBlur={formik.handleBlur}
+              // value={formik.values.email}
+              //alternative
+              {...formik.getFieldProps("email")}
             />
+            {formik.touched.email && formik.errors.email ? (
+              <div className='error'>{formik.errors.email}</div>
+            ) : null}
           </div>
           <div>
             <label htmlFor='chanelName'>Chanel Name</label>
             <input
               type='text'
-              chanelName='chanelName'
+              name='chanelName'
               id='chanelName'
-              onChange={formik.handleChange}
-              value={formik.values.chanelName}
+              // onChange={formik.handleChange}
+              // value={formik.values.chanelName}
+              // onBlur={formik.handleBlur}
+              //alternative
+              {...formik.getFieldProps("chanelName")}
             />
+            {formik.touched.chanelName && formik.errors.chanelName ? (
+              <div className='error'>{formik.errors.chanelName}</div>
+            ) : null}
           </div>
           <button type='submit'>Submit</button>
         </form>
@@ -82,4 +109,4 @@ const FormicHook = () => {
   );
 };
 
-export default FormicHook;
+export default FormicHookOld;
