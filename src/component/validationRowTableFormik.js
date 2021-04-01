@@ -26,10 +26,6 @@ const initData = {
 const validationRowTableFormik = () => {
     return (
         <div>
-
-
-
-
 {/* 03 ======= input field ===== (example)=== */}
 <InputField
 value={values?.itemLists[index]?.itemPrice}
