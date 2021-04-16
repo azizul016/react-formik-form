@@ -6,7 +6,7 @@
 
 label {
   font-weight: bold;
-  display: flex;
+  /* display: flex; */
   margin-bottom: 5px;
 }
 
