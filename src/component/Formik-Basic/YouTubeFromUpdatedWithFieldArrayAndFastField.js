@@ -1,7 +1,20 @@
 import React from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import {
+  Formik,
+  Form,
+  Field,
+  ErrorMessage,
+  FieldArray,
+  FastField,
+} from "formik";
+// details in formik
+//Form is using for removing handleSubmit from form field
+//Field using for removing input field and manage values, handleChange and handleBlur
+// FastField converting Field and  using for render reducing
+//ErrorMessage using for showing error and pass a name value
+
 import * as Yup from "yup";
-import TextError from "./TextError";
+import TextError from "../Errors/TextError";
 const initialValues = {
   name: "Azizl",
   email: "",
@@ -14,6 +27,8 @@ const initialValues = {
     twitter: "",
   },
   phoneNumber: ["", ""],
+  //multiple phone number in an array
+  phNumbers: [""],
 };
 
 const onSubmit = (values) => {
@@ -21,12 +36,12 @@ const onSubmit = (values) => {
 };
 
 const validationSchema = Yup.object({
-  name: Yup.string().required("Required"),
-  email: Yup.string().email("Invalid email format").required("Required"),
-  channel: Yup.string().required("Required"),
+  // name: Yup.string().required("Required"),
+  // email: Yup.string().email("Invalid email format").required("Required"),
+  // channel: Yup.string().required("Required"),
 });
 
-function YouTubeFormWithObjectArray() {
+function YouTubeFromUpdatedWithFieldArrayAndFastField() {
   return (
     <Formik
       initialValues={initialValues}
@@ -71,10 +86,12 @@ function YouTubeFormWithObjectArray() {
         </div>
 
         {/* Adding Address with Props */}
+        {/* using FirstField for reducing render */}
         <div className='form-control'>
           <label htmlFor='address'>Address</label>
-          <Field name='address'>
+          <FastField name='address'>
             {(props) => {
+              console.log("props render");
               // console.log("Render props value", props);
               const { field, form, meta } = props;
               return (
@@ -86,7 +103,22 @@ function YouTubeFormWithObjectArray() {
                 </div>
               );
             }}
-          </Field>
+          </FastField>
+          {/* <Field name='address'>
+            {(props) => {
+              console.log("props render");
+              // console.log("Render props value", props);
+              const { field, form, meta } = props;
+              return (
+                <div>
+                  <input type='text' id='address' {...field} />
+                  {meta?.touched && meta?.error ? (
+                    <div>{meta.error}</div>
+                  ) : null}
+                </div>
+              );
+            }}
+          </Field> */}
         </div>
 
         {/* adding social network such as facebook, twitter */}
@@ -109,10 +141,48 @@ function YouTubeFormWithObjectArray() {
           <Field type='text' id='secondaryPhoneNu' name='phoneNumber[1]' />
         </div>
 
+        {/* multiple phone number added in an array */}
+        <div className='form-control'>
+          <label>List of Phone Number</label>
+          <FieldArray name='phNumbers'>
+            {(fieldArrayProps) => {
+              // console.log("fieldArrayProps", fieldArrayProps);
+              // const { form, push, remove } = fieldArrayProps;
+              // const { values } = form;
+              // const { phNumbers } = values;
+              //code reduce, using nested destructuring
+              const {
+                form: {
+                  values: { phNumbers },
+                },
+                push,
+                remove,
+              } = fieldArrayProps;
+              return (
+                <div>
+                  {phNumbers.map((phNumber, index) => (
+                    <div key={index}>
+                      <Field name={`phNumbers[${index}]`} />
+                      {index > 0 && (
+                        <button type='button' onClick={() => remove(index)}>
+                          -
+                        </button>
+                      )}
+                      <button type='button' onClick={() => push("")}>
+                        +
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              );
+            }}
+          </FieldArray>
+        </div>
+
         <button type='submit'>Submit</button>
       </Form>
     </Formik>
   );
 }
 
-export default YouTubeFormWithObjectArray;
+export default YouTubeFromUpdatedWithFieldArrayAndFastField;

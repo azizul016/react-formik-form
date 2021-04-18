@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Formik,
   Form,
@@ -14,7 +14,7 @@ import {
 //ErrorMessage using for showing error and pass a name value
 
 import * as Yup from "yup";
-import TextError from "./TextError";
+import TextError from "../Errors/TextError";
 const initialValues = {
   name: "Azizl",
   email: "",
@@ -30,9 +30,29 @@ const initialValues = {
   //multiple phone number in an array
   phNumbers: [""],
 };
+const savedValues = {
+  name: "Azizl",
+  email: "a@gmail.com",
+  channel: "abc",
+  comments: "def",
+  address: "Mohammadpur",
+  social: {
+    facebook: "",
+    twitter: "",
+  },
+  phoneNumber: ["", ""],
+  phNumbers: [""],
+};
 
-const onSubmit = (values) => {
+const onSubmit = (values, onSubmitProps) => {
   console.log("Form data", values);
+  console.log("submit props", onSubmitProps);
+
+  //for enable submit button using onSubmitProps.setSubmitting(false). For the submit button condition isSubmitting by default default false . When clicked submit button then isSubmitting function return true. So we need isSubmitting function false. We get isSubmitting inside onSubmitProps and thats name is setSubmitting.
+  onSubmitProps.setSubmitting(false);
+
+  //after submitting form is reset
+  onSubmitProps.resetForm();
 };
 
 const validationSchema = Yup.object({
@@ -50,15 +70,23 @@ const validateComments = (value) => {
   return error;
 };
 
-function YouTubeFormParticularErrorHandling() {
+function YouTubeForm() {
+  const [formValues, setFormValues] = useState(null);
   return (
     <Formik
-      initialValues={initialValues}
+      initialValues={formValues || initialValues}
+      // initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={onSubmit}
       //stopping validation
       // validationOnChange={false}
       // validationOnBlur={false}
+
+      //first way for visible submit button
+      // validateOnMount
+
+      //This props is very important because it decides whether your form can change initial values after the form has been initialized once.
+      enableReinitialize
     >
       {(formik) => {
         console.log("formik render", formik);
@@ -200,7 +228,7 @@ function YouTubeFormParticularErrorHandling() {
                 }}
               </FieldArray>
             </div>
-            <button
+            {/* <button
               type='button'
               onClick={() => formik.validateField("comments")}
             >
@@ -227,8 +255,32 @@ function YouTubeFormParticularErrorHandling() {
               }
             >
               Validation Comments
+            </button> */}
+            {/* first way for submit button visible */}
+            {/* <button type='submit' disabled={!formik.isValid}>
+              Submit
+            </button> */}
+            {/* second way for submit button visible and using "formik.dirty" */}
+            {/* <button type='submit' disabled={!(formik.dirty && formik.isValid)}>
+              Submit
             </button>
-            <button type='submit'>Submit</button>
+             */}
+
+            <button type='button' onClick={() => setFormValues(savedValues)}>
+              Load Save Data
+            </button>
+
+            {/*simple way reset form where using button type reset*/}
+            <button type='reset'>Reset</button>
+
+            {/* is Submitting using when submit some value for api then submit button is disabled unless the the return result api gives some return */}
+
+            <button
+              type='submit'
+              disabled={!formik.isValid || formik.isSubmitting}
+            >
+              Submit
+            </button>
           </Form>
         );
       }}
@@ -236,4 +288,4 @@ function YouTubeFormParticularErrorHandling() {
   );
 }
 
-export default YouTubeFormParticularErrorHandling;
+export default YouTubeForm;

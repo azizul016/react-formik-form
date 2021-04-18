@@ -1,7 +1,7 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import TextError from "./TextError";
+import TextError from "../Errors/TextError";
 const initialValues = {
   name: "Azizl",
   email: "",
@@ -9,7 +9,6 @@ const initialValues = {
   textarea: "",
   // Adding Address with props
   address: "",
-  
 };
 
 const onSubmit = (values) => {

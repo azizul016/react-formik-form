@@ -14,7 +14,7 @@ import {
 //ErrorMessage using for showing error and pass a name value
 
 import * as Yup from "yup";
-import TextError from "./TextError";
+import TextError from "../Errors/TextError";
 const initialValues = {
   name: "Azizl",
   email: "",
