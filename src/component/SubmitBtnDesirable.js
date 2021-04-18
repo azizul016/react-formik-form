@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Formik,
   Form,
@@ -30,29 +30,9 @@ const initialValues = {
   //multiple phone number in an array
   phNumbers: [""],
 };
-const savedValues = {
-  name: "Azizl",
-  email: "a@gmail.com",
-  channel: "abc",
-  comments: "def",
-  address: "Mohammadpur",
-  social: {
-    facebook: "",
-    twitter: "",
-  },
-  phoneNumber: ["", ""],
-  phNumbers: [""],
-};
 
-const onSubmit = (values, onSubmitProps) => {
+const onSubmit = (values) => {
   console.log("Form data", values);
-  console.log("submit props", onSubmitProps);
-
-  //for enable submit button using onSubmitProps.setSubmitting(false). For the submit button condition isSubmitting by default default false . When clicked submit button then isSubmitting function return true. So we need isSubmitting function false. We get isSubmitting inside onSubmitProps and thats name is setSubmitting.
-  onSubmitProps.setSubmitting(false);
-
-  //after submitting form is reset
-  onSubmitProps.resetForm();
 };
 
 const validationSchema = Yup.object({
@@ -70,12 +50,10 @@ const validateComments = (value) => {
   return error;
 };
 
-function YouTubeForm() {
-  const [formValues, setFormValues] = useState(null);
+function SubmitBtnDesirable() {
   return (
     <Formik
-      initialValues={formValues || initialValues}
-      // initialValues={initialValues}
+      initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={onSubmit}
       //stopping validation
@@ -83,10 +61,7 @@ function YouTubeForm() {
       // validationOnBlur={false}
 
       //first way for visible submit button
-      // validateOnMount
-
-      //This props is very important because it decides whether your form can change initial values after the form has been initialized once.
-      enableReinitialize
+      validateOnMount
     >
       {(formik) => {
         console.log("formik render", formik);
@@ -228,7 +203,7 @@ function YouTubeForm() {
                 }}
               </FieldArray>
             </div>
-            {/* <button
+            <button
               type='button'
               onClick={() => formik.validateField("comments")}
             >
@@ -255,30 +230,13 @@ function YouTubeForm() {
               }
             >
               Validation Comments
-            </button> */}
+            </button>
             {/* first way for submit button visible */}
             {/* <button type='submit' disabled={!formik.isValid}>
               Submit
             </button> */}
             {/* second way for submit button visible and using "formik.dirty" */}
-            {/* <button type='submit' disabled={!(formik.dirty && formik.isValid)}>
-              Submit
-            </button>
-             */}
-
-            <button type='button' onClick={() => setFormValues(savedValues)}>
-              Load Save Data
-            </button>
-
-            {/*simple way reset form where using button type reset*/}
-            <button type='reset'>Reset</button>
-
-            {/* is Submitting using when submit some value for api then submit button is disabled unless the the return result api gives some return */}
-
-            <button
-              type='submit'
-              disabled={!formik.isValid || formik.isSubmitting}
-            >
+            <button type='submit' disabled={!(formik.dirty && formik.isValid)}>
               Submit
             </button>
           </Form>
@@ -288,4 +246,4 @@ function YouTubeForm() {
   );
 }
 
-export default YouTubeForm;
+export default SubmitBtnDesirable;
