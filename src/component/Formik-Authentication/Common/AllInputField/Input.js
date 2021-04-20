@@ -1,6 +1,6 @@
 import React from "react";
 import { Field, ErrorMessage } from "formik";
-import TextError from "../../Errors/TextError";
+import TextError from "../../../Errors/TextError";
 
 const Input = (props) => {
   console.log("Input", props);
